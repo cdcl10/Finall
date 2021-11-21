@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   try{
-    fetch('http://192.168.0.107:8080/petForm/races')
+    fetch('https://192.168.0.107:8080/petForm/races')
     .then(response => response.json())
     .then(races => {
       races.forEach(race => {
         console.log(race);
       });
     });
-    fetch('http://192.168.0.107:8080/petForm/colors')
+    fetch('https://192.168.0.107:8080/petForm/colors')
     .then(response => response.json())
     .then(colors => {
       colors.forEach(color => {
