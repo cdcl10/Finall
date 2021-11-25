@@ -2,12 +2,14 @@ let localurl= "http://localhost:8083";
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getClients").addEventListener('click', getClients);
   document.querySelector("#getAllServices").addEventListener('click', getAllServices);
+  document.querySelector("#getAllBills").addEventListener('click', getAllBills);
 });
 
 function getClients(event){
   event.preventDefault();
   document.querySelector("#divClients").style.display = "block";
   document.querySelector("#divServices").style.display = "none";
+  document.querySelector("#divBills").style.display = "none";
   fetch(localurl+"/clients")
   .then(response => response.json())
   .then(clients => {
@@ -82,6 +84,7 @@ function seePets(pets){
 
 function getAllServices(event){
   event.preventDefault();
+  document.querySelector("#divBills").style.display = "none";
   document.querySelector("#divClients").style.display = "none";
   document.querySelector("#divServices").style.display = "block";
   fetch(localurl+"/services")
@@ -108,5 +111,94 @@ function getAllServices(event){
       tBody.appendChild(tr);
     })
   });
+}
+
+function getAllBills(event){
+  event.preventDefault();
+  document.querySelector("#divClients").style.display = "none";
+  document.querySelector("#divServices").style.display = "none";
+  document.querySelector("#divBills").style.display = "block";
+  document.querySelector("#tBodyBills").innerHTML="";
+  let div= document.querySelector("#divFormBills");
+  div.innerHTML= `
+    <form action="" method="post" id="formBills">
+      <div class="mb-3">
+        Email del cliente: <input type="text" id="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <input type="submit" id="submit" class="btn btn-primary" value="Ingresar">
+      </div>
+    </form>
+    `;
+  document.querySelector("#formBills").addEventListener("submit", getClientBills);
+}
+
+function getClientBills(event){
+  event.preventDefault();
+  let form= event.currentTarget;
+  let data= {
+    email: form["email"].value, 
+    name: ""
+  };
+  fetch(localurl+"/users/bills", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(bills => {
+    let tBody= document.querySelector("#tBodyBills");
+    tBody.textContent = '';
+    let tr= document.createElement("tr");
+    let thPetName= document.createElement("th");
+    let thDate= document.createElement("th");
+    let thRate= document.createElement("th");
+    let thClient= document.createElement("th");
+    let thServices= document.createElement("th");
+    thPetName.textContent= "NOMBRE DE LA MASCOTA";
+    thDate.textContent= "FECHA DE FACTURACIÓN";
+    thRate.textContent= "COSTO";
+    thClient.textContent= "EMAIL DEL CLIENTE";
+    thServices.textContent= "SERVICIOS PRESTADOS";
+    tr.appendChild(thPetName);
+    tr.appendChild(thDate);
+    tr.appendChild(thClient);
+    tr.appendChild(thRate);
+    tr.appendChild(thServices);
+    tBody.appendChild(tr);
+    //console.log(bills);
+    bills.forEach(bill => {
+      console.log(tBody);
+      bill.forEach(b => {
+        //console.log(b);
+        let tr= document.createElement("tr");
+        let tPetName= document.createElement("td");
+        let tDate= document.createElement("td");
+        let tServices= document.createElement("td");
+        let tRate= document.createElement("td");
+        let tClient= document.createElement("td");
+        tPetName.textContent= b.petName;
+        tDate.textContent= b.date;
+        tRate.textContent= b.rate;
+        tClient.textContent= b.client;
+        let ul= document.createElement("ul");
+        b.services.forEach(service => {
+          let li= document.createElement("li");
+          li.textContent= service;
+          ul.appendChild(li);
+        });
+        tServices.appendChild(ul);
+        tr.appendChild(tPetName);
+        tr.appendChild(tDate);
+        tr.appendChild(tServices);
+        tr.appendChild(tRate);
+        tr.appendChild(tClient);
+        tBody.appendChild(tr);
+      });
+    })
+  });
+}
+
+function fillTableBills(tbody){
 
 }
