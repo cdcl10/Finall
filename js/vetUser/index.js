@@ -291,7 +291,7 @@ function adminActions(event){
       username: form["username"],
       pass: form["password"],
     };
-    fetch(localurl+"/users/loadInfo", {
+    fetch(localurl+"/users", {
       method: "POST",
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(data)
