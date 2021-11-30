@@ -287,11 +287,14 @@ function adminActions(event){
   document.querySelector('#formAddUser').addEventListener("submit", event => {
     event.preventDefault();
     let form= event.currentTarget;
-    let data= new FormData(form);
+    let data= {
+      username: form["username"],
+      pass: form["password"],
+    };
     fetch(localurl+"/users/loadInfo", {
       method: "POST",
-      //headers: { 'Content-Type': 'multipart/form-data'},
-      body: data
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
     })
     .then(response => {
       console.log(response.status);
