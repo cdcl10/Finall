@@ -37,7 +37,7 @@ function submitFormLogin(event){
       aux= true;
     }
     if(aux){
-      //window.location.replace(weburl+"/vetUser/index.html");
+      window.location.replace(weburl+"/vetUser/index.html");
     }
   }).catch(error => {
     console.log("ERROR Login user: ", error);
