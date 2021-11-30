@@ -300,6 +300,11 @@ function adminActions(event){
     })
     .then(response => {
       console.log(response.status);
+      if(response.status == 201){
+        alert("Usuario creado con éxito");
+      }else{
+        alert("No se pudo crear el usuario");
+      }
     });
   });
 }
