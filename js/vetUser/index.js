@@ -290,6 +290,7 @@ function adminActions(event){
     let data= {
       username: form["username"],
       pass: form["password"],
+      type: "admin";
     };
     fetch(localurl+"/users", {
       method: "POST",
