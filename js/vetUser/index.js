@@ -276,7 +276,7 @@ function adminActions(event){
     <form action="" method="post" id="formAddUser">
       <div class="mb-3">
         Username: <input type="text" class="form-control" name="" id="username">
-        Contraseña: <input type="text" class="form-control" name="" id="password">
+        Contraseña: <input type="password" class="form-control" name="" id="password">
       </div>
       <div class="mb-3">
         <input class="btn btn-primary" type="submit" value="Crear Usuario">
@@ -290,7 +290,7 @@ function adminActions(event){
     let data= {
       username: form["username"],
       pass: form["password"],
-      type: "admin";
+      type: "admin"
     };
     fetch(localurl+"/users", {
       method: "POST",
