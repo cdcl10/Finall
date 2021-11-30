@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getAllServices").addEventListener('click', getAllServices);
   document.querySelector("#getAllBills").addEventListener('click', getAllBills);
   document.querySelector("#loadInfo").addEventListener('click', loadInfo);
+  document.querySelector("#adminAddUser").addEventListener('click', adminActions);
   let userType= window.sessionStorage.getItem("type");
   if(userType === "user"){
     document.querySelector("#adminAddUser").style.display= "none";
@@ -247,6 +248,43 @@ function loadInfo(event){
     </form>
     `;
   document.querySelector('#formLoadInfo').addEventListener("submit", event => {
+    event.preventDefault();
+    let form= event.currentTarget;
+    let data= new FormData(form);
+    fetch(localurl+"/users/loadInfo", {
+      method: "POST",
+      //headers: { 'Content-Type': 'multipart/form-data'},
+      body: data
+    })
+    .then(response => {
+      console.log(response.status);
+    });
+  });
+}
+
+function adminActions(event){
+  console.log("asdf");
+  event.preventDefault();
+  document.querySelector("#divClients").style.display = "none";
+  document.querySelector("#divServices").style.display = "none";
+  document.querySelector("#divBills").style.display = "none";
+  document.querySelector("#tBodyBills").innerHTML="";
+  document.querySelector("#divLoadInfo").style.display = "none";
+  document.querySelector("#divAdminActions").style.display = "block";
+  let div= document.querySelector("#divAdminActions");
+  div.innerHTML= `
+    <form action="" method="post" id="formAddUser">
+      <div class="mb-3">
+        Username: <input type="text" class="form-control" name="" id="username">
+        Contraseña: <input type="text" class="form-control" name="" id="password">
+      </div>
+      <div class="mb-3">
+        <input class="btn btn-primary" type="submit" value="Crear Usuario">
+      </div>
+    </form>
+  `;
+  div.style.display= "block";
+  document.querySelector('#formAddUser').addEventListener("submit", event => {
     event.preventDefault();
     let form= event.currentTarget;
     let data= new FormData(form);
