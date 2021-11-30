@@ -1,9 +1,9 @@
-var localurl= "http://localhost:8083/petForm";
+var localurl= "http://192.168.0.107:8083/petForm";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
     .then(response => response.json())
     .then(races => {
-      races.races.forEach(race => {
+      races.forEach(race => {
         let raceList= document.querySelector("#raceList");
         let option= document.createElement("option");
         option.value= race.race;
@@ -12,10 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(error => {
       console.log("ERROR GETTING RACES: ", error) 
     });
+    fetch(localurl+'/species')
+    .then(response => response.json())
+    .then(species => {
+      species.forEach(specie => {
+        let raceList= document.querySelector("#specieList");
+        let option= document.createElement("option");
+        option.value= specie.specie;
+        raceList.appendChild(option);
+      })
+    }).catch(error => {
+      console.log("ERROR GETTING RACES: ", error) 
+    });
     fetch(localurl+'/colors')
     .then(response => response.json())
     .then(colors => {
-      colors.colors.forEach(color => {
+      colors.forEach(color => {
         let colorList= document.querySelector("#colorList");
         let option= document.createElement("option");
         option.value= color.color;
@@ -32,11 +44,13 @@ function submitPet(event){
     event.preventDefault();
     let form = event.currentTarget;
     form.action= localurl;
-    //console.log(form["petName"].value, form["email"].value, form["petRace"].value, form["petColor"].value)
+    console.log(form["ced"].value, form["petName"].value, form["email"].value, form["petRace"].value, form["petColor"].value);
     let data= {
       email: email.value,
+      ced: form["ced"].value,
       name: form["petName"].value,
       specie: form["petSpecie"].value,
+      weight: form["petWeight"].value,
       race: form["petRace"].value,
       color: form["petColor"].value,
       size: Number(form["petSize"].value),

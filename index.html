@@ -26,19 +26,23 @@
       <form action="" method="post" id="formPet" style="border-style: solid; padding: 20px;">
         <div class="mb-3">
           Email: <input type="email" class="form-control" id="email" required>
+          Cédula: <input type="number" min="100000" max="999999999999999" class="form-control" id="ced" required>
           Nombre de la mascota: <input type="text" class="form-control" id="petName" required>
-          Especie de la mascota: <input type="text" class="form-control" id="petSpecie" required>
+          Peso de la mascota (Kg): <input type="number" class="form-control" id="petWeight" required>
           Raza: <input list="raceList" class="form-control" id="petRace" required>
           <datalist id="raceList">
           </datalist>
           Color de la mascota: <input list="colorList" class="form-control" id="petColor" required>
           <datalist id="colorList">
           </datalist>
+          Especie de la mascota: <input list="specieList" class="form-control" id="petSpecie" required>
+          <datalist id="specieList">
+          </datalist>
           Tamaño de la mascota (cm): <input type="number" class="form-control" id="petSize" required>
           Año de nacimiento: <input type="date" class="form-control" id="petDate" required>
         </div>
         <div class="mb-3">
-          <input type="submit" class="btn btn-primary" value="Solicitar cita" id="btnSubmit">
+          <input type="submit" class="btn btn-primary" value="Registrar mascota" id="btnSubmit">
         </div>
       </form>
     </div>

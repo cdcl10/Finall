@@ -1,8 +1,20 @@
-let localurl= "http://localhost:8083";
+let localurl= "http://192.168.0.107:8083";
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getClients").addEventListener('click', getClients);
   document.querySelector("#getAllServices").addEventListener('click', getAllServices);
   document.querySelector("#getAllBills").addEventListener('click', getAllBills);
+  document.querySelector("#loadInfo").addEventListener('click', loadInfo);
+  let userType= window.sessionStorage.getItem("type");
+  if(userType === "user"){
+    document.querySelector("#adminAddUser").style.display= "none";
+  }else if (userType === "admin"){
+    document.querySelector("#divActionsAdmin").style.display= "block";
+  }else {
+    document.querySelector("#divActions").innerHTML = `
+    <div class="alert alert-danger" role="alert">
+      Acceso denegado!
+    </div>`;
+  }
 });
 
 function getClients(event){
@@ -10,6 +22,8 @@ function getClients(event){
   document.querySelector("#divClients").style.display = "block";
   document.querySelector("#divServices").style.display = "none";
   document.querySelector("#divBills").style.display = "none";
+  document.querySelector("#divLoadInfo").style.display = "none";
+  document.querySelector("#divAdminActions").style.display = "none";
   fetch(localurl+"/clients")
   .then(response => response.json())
   .then(clients => {
@@ -29,7 +43,7 @@ function getClients(event){
     tr.appendChild(thAddress);
     tr.appendChild(thPets);
     tBody.appendChild(tr);
-    clients.clients.forEach(client => {
+    clients.forEach(client => {
       let tr= document.createElement("tr");
       let tName= document.createElement("td");
       let tEmail= document.createElement("td");
@@ -87,6 +101,8 @@ function getAllServices(event){
   document.querySelector("#divBills").style.display = "none";
   document.querySelector("#divClients").style.display = "none";
   document.querySelector("#divServices").style.display = "block";
+  document.querySelector("#divLoadInfo").style.display = "none";
+  document.querySelector("#divAdminActions").style.display = "none";
   fetch(localurl+"/services")
   .then(response => response.json())
   .then(services => {
@@ -104,7 +120,7 @@ function getAllServices(event){
       let tr= document.createElement("tr");
       let tService= document.createElement("td");
       let tRate= document.createElement("td");
-      tService.textContent= service.service;
+      tService.textContent= service.type;
       tRate.textContent= service.rate;
       tr.appendChild(tService);
       tr.appendChild(tRate);
@@ -119,11 +135,13 @@ function getAllBills(event){
   document.querySelector("#divServices").style.display = "none";
   document.querySelector("#divBills").style.display = "block";
   document.querySelector("#tBodyBills").innerHTML="";
+  document.querySelector("#divLoadInfo").style.display = "none";
+  document.querySelector("#divAdminActions").style.display = "none";
   let div= document.querySelector("#divFormBills");
   div.innerHTML= `
     <form action="" method="post" id="formBills">
       <div class="mb-3">
-        Email del cliente: <input type="text" id="email" class="form-control" required>
+        Cédula del cliente: <input type="text" id="ced" class="form-control" required>
       </div>
       <div class="mb-3">
         <input type="submit" id="submit" class="btn btn-primary" value="Ingresar">
@@ -137,7 +155,7 @@ function getClientBills(event){
   event.preventDefault();
   let form= event.currentTarget;
   let data= {
-    email: form["email"].value, 
+    ced: form["ced"].value, 
     name: ""
   };
   fetch(localurl+"/users/bills", {
@@ -155,50 +173,90 @@ function getClientBills(event){
     let thRate= document.createElement("th");
     let thClient= document.createElement("th");
     let thServices= document.createElement("th");
+    let thPayMethods= document.createElement("th");
     thPetName.textContent= "NOMBRE DE LA MASCOTA";
     thDate.textContent= "FECHA DE FACTURACIÓN";
     thRate.textContent= "COSTO";
     thClient.textContent= "EMAIL DEL CLIENTE";
     thServices.textContent= "SERVICIOS PRESTADOS";
+    thPayMethods.textContent= "MÉTODO DE PAGO";
     tr.appendChild(thPetName);
     tr.appendChild(thDate);
     tr.appendChild(thClient);
     tr.appendChild(thRate);
     tr.appendChild(thServices);
+    tr.appendChild(thPayMethods);
     tBody.appendChild(tr);
-    //console.log(bills);
+    console.log(bills);
     bills.forEach(bill => {
-      console.log(tBody);
-      bill.forEach(b => {
-        //console.log(b);
-        let tr= document.createElement("tr");
-        let tPetName= document.createElement("td");
-        let tDate= document.createElement("td");
-        let tServices= document.createElement("td");
-        let tRate= document.createElement("td");
-        let tClient= document.createElement("td");
-        tPetName.textContent= b.petName;
-        tDate.textContent= b.date;
-        tRate.textContent= b.rate;
-        tClient.textContent= b.client;
-        let ul= document.createElement("ul");
-        b.services.forEach(service => {
-          let li= document.createElement("li");
-          li.textContent= service;
-          ul.appendChild(li);
-        });
-        tServices.appendChild(ul);
-        tr.appendChild(tPetName);
-        tr.appendChild(tDate);
-        tr.appendChild(tServices);
-        tr.appendChild(tRate);
-        tr.appendChild(tClient);
-        tBody.appendChild(tr);
+      //console.log(tBody);
+      //console.log(b);
+      let tr= document.createElement("tr");
+      let tPetName= document.createElement("td");
+      let tDate= document.createElement("td");
+      let tServices= document.createElement("td");
+      let tRate= document.createElement("td");
+      let tClient= document.createElement("td");
+      let tPayMethods= document.createElement("td");
+      tPetName.textContent= bill.pet.name;
+      tDate.textContent= bill.date;
+      tRate.textContent= bill.rate;
+      tClient.textContent= bill.pet.owner.email;
+      let ul= document.createElement("ul");
+      bill.services.forEach(service => {
+        let li= document.createElement("li");
+        li.textContent= service.type;
+        ul.appendChild(li);
       });
+      tServices.appendChild(ul);
+      let ul2= document.createElement("ul");
+      bill.payMethods.forEach(pm => {
+        let li= document.createElement("li");
+        li.textContent= pm.method;
+        ul2.appendChild(li);
+      });
+      tPayMethods.appendChild(ul2);
+      tr.appendChild(tPetName);
+      tr.appendChild(tDate);
+      tr.appendChild(tClient);
+      tr.appendChild(tRate);
+      tr.appendChild(tServices);
+      tr.appendChild(tPayMethods);
+      tBody.appendChild(tr);
     })
   });
 }
 
-function fillTableBills(tbody){
-
+function loadInfo(event){
+  event.preventDefault();
+  document.querySelector("#divClients").style.display = "none";
+  document.querySelector("#divServices").style.display = "none";
+  document.querySelector("#divBills").style.display = "none";
+  document.querySelector("#tBodyBills").innerHTML="";
+  document.querySelector("#divLoadInfo").style.display = "block";
+  document.querySelector("#divAdminActions").style.display = "none";
+  let div= document.querySelector("#divLoadInfo");
+  div.innerHTML= `
+    <form action="" method="post" id="formLoadInfo" enctype="multipart/form-data">
+      <div class="mb-3">
+        Ingrese el archivo Excel: <input type="file" name="file" id="file" class="form-control" accept=".xlsx,.xls" required>
+      </div>
+      <div class="mb-3">
+        <input type="submit" id="submit" class="btn btn-primary" value="Ingresar">
+      </div>
+    </form>
+    `;
+  document.querySelector('#formLoadInfo').addEventListener("submit", event => {
+    event.preventDefault();
+    let form= event.currentTarget;
+    let data= new FormData(form);
+    fetch(localurl+"/users/loadInfo", {
+      method: "POST",
+      //headers: { 'Content-Type': 'multipart/form-data'},
+      body: data
+    })
+    .then(response => {
+      console.log(response.status);
+    });
+  });
 }
