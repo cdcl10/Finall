@@ -1,5 +1,5 @@
 var localurl= "http://192.168.0.107:8083/users";
-var weburl= "https://wiliamfm.github.io/bd1-final-view/";
+var weburl= "https://wiliamfm.github.io/bd1-final-view";
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#formLogin').addEventListener('submit', submitFormLogin);
 });
@@ -19,6 +19,7 @@ function submitFormLogin(event){
   }).then(response => {
     console.log(response.status);
     console.log("RESPONSE", response.headers);
+    let aux= false;
     if(response.status === 404){
       let div= document.querySelector('#divAlert');
       div.className= "alert alert-warning";
@@ -27,11 +28,15 @@ function submitFormLogin(event){
     }else if(response.status === 302){
       console.log("user");
       window.sessionStorage.setItem("type", "user");
+      aux= true;
     }else if(response.status === 308){
       console.log("admins");
       window.sessionStorage.setItem("type", "admin");
+      aux= true;
     }
-    window.location.replace(weburl+"/vetUser/index.html");
+    if(aux){
+      window.location.replace(weburl+"/vetUser/index.html");
+    }
   }).catch(error => {
     console.log("ERROR Login user: ", error);
   });
