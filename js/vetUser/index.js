@@ -292,6 +292,7 @@ function adminActions(event){
       pass: form["password"].value,
       type: "admin"
     };
+    console.log(data);
     fetch(localurl+"/users", {
       method: "POST",
       headers: { 'Content-Type': 'application/json'},
