@@ -288,8 +288,8 @@ function adminActions(event){
     event.preventDefault();
     let form= event.currentTarget;
     let data= {
-      username: form["username"],
-      pass: form["password"],
+      username: form["username"].value,
+      pass: form["password"].value,
       type: "admin"
     };
     fetch(localurl+"/users", {
