@@ -1,4 +1,4 @@
-var localurl= "http://192.168.0.107:8083/petForm";
+var localurl= "http://192.168.10.14:8000/vet";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
     .then(response => response.json())
@@ -43,7 +43,7 @@ function submitPet(event){
     let email= document.querySelector('#email');
     event.preventDefault();
     let form = event.currentTarget;
-    form.action= localurl;
+    form.action= localurl+"/registerPet";
     console.log(form["ced"].value, form["petName"].value, form["email"].value, form["petRace"].value, form["petColor"].value);
     let data= {
       email: email.value,
