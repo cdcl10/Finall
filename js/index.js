@@ -1,7 +1,9 @@
 var localurl= "http://192.168.0.107:8080/vet/races";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
-    .then(response => response.json())
+    
+        .then( re => console.log(re)});
+  /*/  .then(response => response.json())
     .then(races => {
       races.forEach(race => {
         let raceList= document.querySelector("#raceList");
@@ -11,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }).catch(error => {
       console.log("ERROR GETTING RACES: ", error) 
-    });
+    });*/
     fetch(localurl+'/species')
     .then(response => response.json())
     .then(species => {
