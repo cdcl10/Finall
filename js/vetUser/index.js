@@ -354,10 +354,10 @@ function createBill(event){
     let ss = form['idServices'].value.split(';');
     let pms = form['idPayMethods'].value.split(';');
     let data= {
-      petName= form['petName'].value,
-      ced= form['idClient'].value,
-      services= ss,
-      payMethods= pms,
+      petName: form['petName'].value,
+      ced: form['idClient'].value,
+      services: ss,
+      payMethods: pms,
     };
     fetch(location + '/bills', {
       method: 'POST',
