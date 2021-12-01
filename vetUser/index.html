@@ -14,6 +14,7 @@
     <a href="" id="getAllBills">Facturación</a>
     <a href="" id="getAllServices">Servicios prestados</a>
     <a href="" id="loadInfo">Cargar información</a>
+    <a href="" id="createBill">Crear Factura</a>
   </div>
   <div class="container" id="divActionsAdmin" style="display: none;">
     <a href="" id="adminAddUser">Crear nuevo usuario</a>
@@ -49,6 +50,18 @@
   </div>
   <div class="container" id="divAdminActions">
 
+  </div>
+  <div class="container" id="divFormCreateBills">
+    <form action="" id="formCreateBills">
+      Nombre de la mascota: <input type="text" id="petName" class="form-control" required>
+      Cédula del cliente: <input type="text" id="idClient" class="form-control" required>
+      Servicios prestados (separados por ";")<input list="listServices" id="idServices" class="form-control" required>
+        <datalist id="listServices">
+        </datalist>
+      Métodos de pago (separados por ";") <input list="listPayMethods" id="idPayMethods" class="form-control" required>
+        <datalist id="listPayMethods">
+        </datalist>
+    </form>
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

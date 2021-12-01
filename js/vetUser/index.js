@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getAllBills").addEventListener('click', getAllBills);
   document.querySelector("#loadInfo").addEventListener('click', loadInfo);
   document.querySelector("#adminAddUser").addEventListener('click', adminActions);
+  document.querySelector("#createBills").addEventListener('click', createBill);
   let userType= window.sessionStorage.getItem("type");
   if(userType === "user"){
     document.querySelector("#adminAddUser").style.display= "none";
@@ -25,6 +26,7 @@ function getClients(event){
   document.querySelector("#divBills").style.display = "none";
   document.querySelector("#divLoadInfo").style.display = "none";
   document.querySelector("#divAdminActions").style.display = "none";
+  document.querySelector("#divFormCreateBills").style.display = "none";
   fetch(localurl+"/clients")
   .then(response => response.json())
   .then(clients => {
@@ -104,6 +106,7 @@ function getAllServices(event){
   document.querySelector("#divServices").style.display = "block";
   document.querySelector("#divLoadInfo").style.display = "none";
   document.querySelector("#divAdminActions").style.display = "none";
+  document.querySelector("#divFormCreateBills").style.display = "none";
   fetch(localurl+"/services")
   .then(response => response.json())
   .then(services => {
@@ -138,6 +141,7 @@ function getAllBills(event){
   document.querySelector("#tBodyBills").innerHTML="";
   document.querySelector("#divLoadInfo").style.display = "none";
   document.querySelector("#divAdminActions").style.display = "none";
+  document.querySelector("#divFormCreateBills").style.display = "none";
   let div= document.querySelector("#divFormBills");
   div.innerHTML= `
     <form action="" method="post" id="formBills">
@@ -236,6 +240,7 @@ function loadInfo(event){
   document.querySelector("#tBodyBills").innerHTML="";
   document.querySelector("#divLoadInfo").style.display = "block";
   document.querySelector("#divAdminActions").style.display = "none";
+  document.querySelector("#divFormCreateBills").style.display = "none";
   let div= document.querySelector("#divLoadInfo");
   div.innerHTML= `
     <form action="" method="post" id="formLoadInfo" enctype="multipart/form-data">
@@ -271,6 +276,7 @@ function adminActions(event){
   document.querySelector("#tBodyBills").innerHTML="";
   document.querySelector("#divLoadInfo").style.display = "none";
   document.querySelector("#divAdminActions").style.display = "block";
+  document.querySelector("#divFormCreateBills").style.display = "none";
   let div= document.querySelector("#divAdminActions");
   div.innerHTML= `
     <form action="" method="post" id="formAddUser">
@@ -304,6 +310,64 @@ function adminActions(event){
         alert("Usuario creado con éxito");
       }else{
         alert("No se pudo crear el usuario");
+      }
+    });
+  });
+}
+
+function createBill(event){
+  event.preventDefault();
+  document.querySelector("#divClients").style.display = "none";
+  document.querySelector("#divServices").style.display = "none";
+  document.querySelector("#divBills").style.display = "none";
+  document.querySelector("#tBodyBills").innerHTML="";
+  document.querySelector("#divLoadInfo").style.display = "none";
+  document.querySelector("#divAdminActions").style.display = "none";
+  document.querySelector("#divFormCreateBills").style.display = "block";
+  fetch(localurl+'/getPayMethods')
+    .then(response => response.json())
+    .then(pms => {
+      pms.forEach(pm => {
+        let pmsList= document.querySelector("#listPayMethods");
+        let option= document.createElement("option");
+        option.value= pm.method;
+        pmsList.appendChild(option);
+      })
+    }).catch(error => {
+      console.log("ERROR GETTING PMS: ", error) 
+    });
+    fetch(localurl+'/services')
+    .then(response => response.json())
+    .then(services => {
+      services.forEach(s => {
+        let servicesList= document.querySelector("#listServices");
+        let option= document.createElement("option");
+        option.value= s.type;
+        servicesList.appendChild(option);
+      })
+    }).catch(error => {
+      console.log("ERROR GETTING RACES: ", error) 
+    });
+  document.querySelector('#formCreateBills').addEventListener("submit", event => {
+    event.preventDefault();
+    let form= event.currentTarget;
+    let ss = form['idServices'].value.split(';');
+    let pms = form['idPayMethods'].value.split(';');
+    let data= {
+      petName= form['petName'].value,
+      ced= form['idClient'].value,
+      services= ss,
+      payMethods= pms,
+    };
+    fetch(location + '/bills', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(response => {
+      if(response.status === 201){
+        alert("Factura creada con éxito");
+      }else{
+        alert("Ups!, algo salió mal");
       }
     });
   });
