@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getAllBills").addEventListener('click', getAllBills);
   document.querySelector("#loadInfo").addEventListener('click', loadInfo);
   document.querySelector("#adminAddUser").addEventListener('click', adminActions);
-  document.querySelector("#createBills").addEventListener('click', createBill);
+  document.querySelector("#createBill").addEventListener('click', createBill);
   let userType= window.sessionStorage.getItem("type");
   if(userType === "user"){
     document.querySelector("#adminAddUser").style.display= "none";
@@ -146,13 +146,25 @@ function getAllBills(event){
   div.innerHTML= `
     <form action="" method="post" id="formBills">
       <div class="mb-3">
-        Cédula del cliente: <input type="text" id="ced" class="form-control" required>
+        Cédula del cliente: <input list="listClients" id="ced" class="form-control" required>
+        <datalist id= listClients>
+        </datalist>
       </div>
       <div class="mb-3">
         <input type="submit" id="submit" class="btn btn-primary" value="Ingresar">
       </div>
     </form>
     `;
+  fetch(localurl + "/clients")
+  .then(response => response.json())
+  .then(clients => {
+    clients.forEach(cliente => {
+      let clientsList= document.querySelector("#listClients");
+      let option= document.createElement("option");
+      option.value= cliente.ced.trim();
+      clientsList.appendChild(option);
+    });
+  });
   document.querySelector("#formBills").addEventListener("submit", getClientBills);
 }
 
@@ -324,7 +336,7 @@ function createBill(event){
   document.querySelector("#divLoadInfo").style.display = "none";
   document.querySelector("#divAdminActions").style.display = "none";
   document.querySelector("#divFormCreateBills").style.display = "block";
-  fetch(localurl+'/getPayMethods')
+  fetch(localurl+'/bills/getPayMethods')
     .then(response => response.json())
     .then(pms => {
       pms.forEach(pm => {
@@ -353,13 +365,15 @@ function createBill(event){
     let form= event.currentTarget;
     let ss = form['idServices'].value.split(';');
     let pms = form['idPayMethods'].value.split(';');
+    ss= ss.map(s => s.trim());
+    pms= pms.map(s => s.trim());
     let data= {
       petName: form['petName'].value,
       ced: form['idClient'].value,
       services: ss,
       payMethods: pms,
     };
-    fetch(location + '/bills', {
+    fetch(localurl + '/bills', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)

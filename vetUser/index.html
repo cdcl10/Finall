@@ -10,14 +10,34 @@
 <body>
   
   <div class="container" id="divActions">
-    <a href="" id="getClients">Lista de clientes</a>
-    <a href="" id="getAllBills">Facturación</a>
-    <a href="" id="getAllServices">Servicios prestados</a>
-    <a href="" id="loadInfo">Cargar información</a>
-    <a href="" id="createBill">Crear Factura</a>
-  </div>
-  <div class="container" id="divActionsAdmin" style="display: none;">
-    <a href="" id="adminAddUser">Crear nuevo usuario</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 10px; padding: 10px;">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" style="padding: 10px;">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="" id="getClients" class="nav-link active">Lista de clientes</a>
+            </li>
+            <li class="nav-item">
+              <a href="" id="getAllBills" class="nav-link active">Facturación</a>
+            </li>
+            <li class="nav-item">
+              <a href="" id="getAllServices" class="nav-link active">Servicios prestados</a>
+            </li>
+            <li class="nav-item">
+              <a href="" id="loadInfo" class="nav-link active">Cargar información</a>
+            </li>
+            <li class="nav-item">
+              <a href="" id="createBill" class="nav-link active">Crear Factura</a>
+            </li>
+            <li class="nav-item">
+              <div class="container" id="divActionsAdmin" style="display: none;">
+                <a href="" id="adminAddUser" class="nav-link active">Crear nuevo usuario</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </div>
 
   <div class="container" id="divClients">
@@ -51,16 +71,22 @@
   <div class="container" id="divAdminActions">
 
   </div>
-  <div class="container" id="divFormCreateBills">
+  <div class="container" id="divFormCreateBills" style="display: none;">
+    <h3>Crear Factura</h3>
     <form action="" id="formCreateBills">
-      Nombre de la mascota: <input type="text" id="petName" class="form-control" required>
-      Cédula del cliente: <input type="text" id="idClient" class="form-control" required>
-      Servicios prestados (separados por ";")<input list="listServices" id="idServices" class="form-control" required>
-        <datalist id="listServices">
-        </datalist>
-      Métodos de pago (separados por ";") <input list="listPayMethods" id="idPayMethods" class="form-control" required>
-        <datalist id="listPayMethods">
-        </datalist>
+      <div class="mb-3">
+        Nombre de la mascota: <input type="text" id="petName" class="form-control" required>
+        Cédula del cliente: <input type="text" id="idClient" class="form-control" required>
+        Servicios prestados (separados por ";")<input list="listServices" id="idServices" class="form-control" required>
+          <datalist id="listServices">
+          </datalist>
+        Métodos de pago (separados por ";") <input list="listPayMethods" id="idPayMethods" class="form-control" required>
+          <datalist id="listPayMethods">
+          </datalist>
+      </div>
+        <div class="mb-3">
+          <input type="submit" value="Crear" class="btn btn-primary">
+        </div>
     </form>
   </div>
 </body>
