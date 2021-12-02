@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let option= document.createElement("option");
         option.value= race.race;
         raceList.appendChild(option);
-   
+      })
     }).catch(error => {
       console.log("ERROR GETTING RACES: ", error) 
     });
