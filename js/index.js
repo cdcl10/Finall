@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
      })
     }).catch(error => {
       console.log("ERROR GETTING RACES: ", error) 
-    });*/
+    });
     fetch(localurl+'/species')
     .then(response => response.json())
     .then(species => {
