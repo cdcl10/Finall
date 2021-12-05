@@ -1,10 +1,8 @@
 
-var localurl= "http://192.168.10.12:8080/vet";
+var localurl= "http://192.168.10.12:8080/";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
-    
- 
-  .then(response => response.json())
+    .then(response => response.json())
     .then(races => {
       races.forEach(race => {
         let raceList= document.querySelector("#raceList");
