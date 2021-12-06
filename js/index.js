@@ -3,10 +3,7 @@ var localurl= "http://172.20.10.2:8000/vet";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
     .then(response => response.json())
-    console.log(res);
-   // if(res.ok){
-        
-    //}
+  
     
     .then(races => {
       races.forEach(race => {
