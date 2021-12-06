@@ -1,4 +1,4 @@
-var localurl= "http://192.168.0.107:8083/users";
+var localurl= "http://192.168.0.107:8000/users";
 var weburl= "https://wiliamfm.github.io/bd1-final-view";
 document.addEventListener('DOMContentLoaded', () => {
   window.sessionStorage.removeItem("type");
