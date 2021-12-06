@@ -1,5 +1,5 @@
 
-var localurl= "http://192.168.10.12:8080/";
+var localurl= "http://192.168.10.12:8080/vet";
 document.addEventListener('DOMContentLoaded', () => {
     fetch(localurl+'/races')
     .then(response => response.json())
