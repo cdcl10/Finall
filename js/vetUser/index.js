@@ -1,4 +1,4 @@
-let localurl= "http://192.168.0.107:8083";
+let localurl= "http://172.20.10.2:8000";
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#getClients").addEventListener('click', getClients);
   document.querySelector("#getAllServices").addEventListener('click', getAllServices);
