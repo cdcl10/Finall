@@ -1,4 +1,4 @@
-var localurl= "http://192.168.0.107:8000/clients";
+var localurl= "http://172.20.10.2:8000/clients";
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector("#formRegister").addEventListener('submit', submitForm)
 });
